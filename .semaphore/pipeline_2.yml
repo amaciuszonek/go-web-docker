@@ -15,3 +15,5 @@ blocks:
             - 'docker pull $DOCKER_USERNAME/mathapp-production:latest'
             - 'docker build -f Dockerfile.production --cache-from $DOCKER_USERNAME/mathapp-production:latest -t $DOCKER_USERNAME/mathapp-production:latest .'
             - 'docker push $DOCKER_USERNAME/mathapp-production:latest'
+      secrets:
+        - name: dockerhub
