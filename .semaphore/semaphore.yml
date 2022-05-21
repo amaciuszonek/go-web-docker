@@ -8,7 +8,7 @@ blocks:
   - name: Test
     task:
       jobs:
-        - name: go test
+        - name: Install
           commands:
             - sem-version go 1.18
             - export GO111MODULE=on
@@ -19,3 +19,18 @@ blocks:
             - 'cache restore vendor-$SEMAPHORE_GIT_BRANCH-$(checksum go.mod),vendor-$SEMAPHORE_GIT_BRANCH,vendor-master'
             - go mod vendor
             - 'cache store vendor-$SEMAPHORE_GIT_BRANCH-$(checksum go.mod),vendor-$SEMAPHORE_GIT_BRANCH,vendor-master vendor'
+  - name: Test
+    task:
+      prologue:
+        commands:
+          - sem-version go 1.18
+          - export GO111MODULE=on
+          - export GOPATH=~/go
+          - 'export PATH=/home/semaphore/go/bin:$PATH'
+          - checkout
+          - cd src
+          - 'cache restore vendor-$SEMAPHORE_GIT_BRANCH-$(checksum go.mod),vendor-$SEMAPHORE_GIT_BRANCH,vendor-master'
+      jobs:
+        - name: Test
+          commands:
+            - go test ./...
